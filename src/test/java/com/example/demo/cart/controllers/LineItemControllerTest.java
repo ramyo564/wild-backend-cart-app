@@ -55,7 +55,7 @@ class LineItemControllerTest {
         String json = """
                 {
                     "productId": "product-1",
-                    "quantity: 2
+                    "quantity": 2
                 }
                 """;
 
@@ -76,7 +76,7 @@ class LineItemControllerTest {
         String json = """
                 {
                     "productId": "product-1",
-                    "quantity: 2
+                    "quantity": 2
                 }
                 """;
 
@@ -97,7 +97,7 @@ class LineItemControllerTest {
         String json = """
                 {
                     "productId": "product-2",
-                    "quantity: 2
+                    "quantity": 2
                 }
                 """;
 
