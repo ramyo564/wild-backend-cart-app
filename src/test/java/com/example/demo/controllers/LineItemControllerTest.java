@@ -1,4 +1,4 @@
-package com.example.demo.cart.controllers;
+package com.example.demo.controllers;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;

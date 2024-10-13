@@ -1,4 +1,4 @@
-package com.example.demo.cart.controllers.dtos;
+package com.example.demo.controllers.dtos;
 
 import java.util.List;
 

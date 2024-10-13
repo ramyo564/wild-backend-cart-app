@@ -1,10 +1,4 @@
-# Simple Cart Demo
-
-## 프로젝트 생성
-
-<https://start.spring.io/>
-
-![Screenshot](./images/spring-initializr.png)
+# Wild Backend Cart application
 
 ## 테스트 실행
 
