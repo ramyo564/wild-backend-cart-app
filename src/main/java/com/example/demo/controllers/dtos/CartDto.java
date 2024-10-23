@@ -6,7 +6,7 @@ public record CartDto(
         List<LineItemDto> lineItems,
         int totalPrice
 ) {
-    public static record LineItemDto(
+    public record LineItemDto(
             String id,
             String productId,
             String productName,
