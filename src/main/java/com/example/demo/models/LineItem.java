@@ -9,7 +9,7 @@ public class LineItem {
     private int unitPrice;
     private int totalPrice;
 
-    public LineItem(String productId, String id, int quantity) {
+    public LineItem(String id, String productId, int quantity) {
         this.productId = productId;
         this.id = id;
         this.quantity = quantity;
