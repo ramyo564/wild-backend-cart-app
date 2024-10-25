@@ -41,4 +41,23 @@ public class CartService {
 
         return new Cart(lineItems, totalPrice);
     }
+
+    public void addProduct(String productId, int quantity) {
+        List<LineItem> lineItems = lineItemDAO.findALl();
+
+        LineItem lineItem = lineItems.stream()
+                .filter(i -> i.getProductId().equals(productId))
+                .findFirst()
+                .orElse(null);
+
+        if (lineItem == null){
+            lineItem = new LineItem(productId, quantity);
+            lineItemDAO.add(lineItem);
+            return;
+        }
+
+
+        lineItem.setQuantity(lineItem.getQuantity() + quantity);
+        lineItemDAO.update(lineItem);
+    }
 }

@@ -13,8 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 class CartServiceTest {
     private LineItemDAO lineItemDAO;
@@ -85,6 +87,65 @@ class CartServiceTest {
                 .isEqualTo(
                         product1.getPrice() * quantity1
                                 + product2.getPrice() * quantity2);
+    }
+
+    @Test
+    @DisplayName("비어있는 장바구니에 상품 담기")
+    void addProduct() {
+        // Given
+        String productId = product1.getId();
+        int quantity = 2;
+
+        // When
+        cartService.addProduct(productId, quantity);
+
+        // Then
+        verify(lineItemDAO).add(argThat(lineItem ->
+                lineItem.getProductId().equals(productId)
+                        && lineItem.getQuantity() == quantity
+
+        ));
+    }
+
+    @Test
+    @DisplayName("비어있는 장바구니에 없는 상품 담기")
+    void addNewProduct() {
+        // Given
+        String productId = product1.getId();
+        int quantity = 2;
+
+        lineItems.add(new LineItem(product2.getId(), 10));
+
+        // When
+        cartService.addProduct(productId, quantity);
+
+        // Then
+        verify(lineItemDAO).add(argThat(lineItem ->
+                lineItem.getProductId().equals(productId)
+                        && lineItem.getQuantity() == quantity
+
+        ));
+    }
+
+    @Test
+    @DisplayName("장바구니에 이미 있는 상품 추가로 담기")
+    void addExtraSameProduct() {
+        // Given
+        String productId = product1.getId();
+        int quantity = 2;
+        int oldQuantity = 1;
+
+        lineItems.add(new LineItem(product2.getId(), oldQuantity));
+
+        // When
+        cartService.addProduct(productId, quantity);
+
+        // Then
+        verify(lineItemDAO).update(argThat(lineItem ->
+                lineItem.getProductId().equals(productId)
+                        && lineItem.getQuantity() == oldQuantity + quantity
+
+        ));
     }
 
     private void clearCart() {

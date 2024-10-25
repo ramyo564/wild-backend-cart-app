@@ -9,6 +9,12 @@ public class LineItem {
     private int unitPrice;
     private int totalPrice;
 
+    public LineItem(String productId, int quantity) {
+        this.productId = productId;
+        this.quantity = quantity;
+    }
+
+
     public LineItem(String id, String productId, int quantity) {
         this.productId = productId;
         this.id = id;
@@ -25,6 +31,10 @@ public class LineItem {
 
     public int getQuantity() {
         return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public String getProductName() {
@@ -50,6 +60,5 @@ public class LineItem {
     public void setTotalPrice(int totalPrice) {
         this.totalPrice = totalPrice;
     }
-
 
 }
