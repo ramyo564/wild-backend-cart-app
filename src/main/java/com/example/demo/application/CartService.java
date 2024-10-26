@@ -1,54 +1,61 @@
 package com.example.demo.application;
 
-import com.example.demo.infrastructure.LineItemDAO;
-import com.example.demo.infrastructure.ProductDAO;
+import com.example.demo.infrastructure.CartRepository;
+import com.example.demo.infrastructure.LineItemRepository;
+import com.example.demo.infrastructure.ProductRepository;
 import com.example.demo.models.Cart;
 import com.example.demo.models.LineItem;
 import com.example.demo.models.Product;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CartService {
 
-    private final LineItemDAO lineItemDAO;
-    private final ProductDAO productDAO;
+    private final CartRepository cartRepository;
+    private final ProductRepository productRepository;
 
-    public CartService(LineItemDAO lineItemDAO, ProductDAO productDAO) {
-        this.lineItemDAO = lineItemDAO;
-        this.productDAO = productDAO;
+    public CartService(
+            CartRepository cartRepository,
+            ProductRepository productRepository
+    ) {
+        this.cartRepository = cartRepository;
+        this.productRepository = productRepository;
     }
 
     public Cart getCart() {
-        List<LineItem> lineItems = lineItemDAO.findALl();
+        Cart cart = cartRepository.find();
 
-        lineItems.forEach(lineItem -> {
-            String productId = lineItem.getProductId();
-            Product product = productDAO.find(productId);
+        List<String> productIds = cart.getLineItems().stream()
+                .map(LineItem::getProductId)
+                .toList();
+
+        Map<String, Product> products = new HashMap<>();
+        productRepository.findAllByIds(productIds).forEach(
+                product -> {
+                    products.put(product.getId(), product);
+                });
+
+        cart.getLineItems().forEach(lineItem -> {
+            Product product = products.get(lineItem.getProductId());
             lineItem.setProduct(product);
         });
 
-
-
-        return new Cart(lineItems);
+        return cart;
     }
 
     public void addProduct(String productId, int quantity) {
-        List<LineItem> lineItems = lineItemDAO.findALl();
+        // 1. 도메인 모델 준비
+        Cart cart = getCart();
+        Product product = productRepository.find(productId);
 
-        LineItem lineItem = lineItems.stream()
-                .filter(i -> i.getProductId().equals(productId))
-                .findFirst()
-                .orElse(null);
+        // 2. 도메인 모델이 도메인 로직 실행
+        cart.addProduct(product, quantity);
 
-        if (lineItem == null){
-            lineItem = new LineItem(productId, quantity);
-            lineItemDAO.add(lineItem);
-            return;
-        }
-
-        lineItem.addQuantity(quantity);
-        lineItemDAO.update(lineItem);
+        // 3. 데이터베이스에 반영
+        cartRepository.save(cart);
     }
 }

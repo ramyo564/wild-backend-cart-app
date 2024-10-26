@@ -7,25 +7,23 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import org.bson.Document;
 import org.bson.types.ObjectId;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-public class LineItemDAO {
+@Repository
+public class LineItemRepository {
 
     private final MongoCollection<Document> collection;
 
-    public LineItemDAO(
-            MongoCollection<Document> collection
-    ) {
-        this.collection = collection;
+    public LineItemRepository(MongoDatabase mongoDatabase) {
+        this.collection = mongoDatabase.getCollection("line_items");
     }
 
     public void add(LineItem lineItem) {
-        Document document = new Document()
-                .append("product_id", lineItem.getProductId())
+        Document document = new Document();
+        document.append("product_id", lineItem.getProductId())
                 .append("quantity", lineItem.getQuantity());
 
         collection.insertOne(document);
@@ -41,7 +39,7 @@ public class LineItemDAO {
         );
     }
 
-    public List<LineItem> findALl() {
+    public List<LineItem> findAll() {
         List<Document> documents = new ArrayList<>();
 
         collection.find().into(documents);
