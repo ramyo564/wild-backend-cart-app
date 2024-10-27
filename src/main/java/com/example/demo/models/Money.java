@@ -4,6 +4,8 @@ public record Money(
         int amount,
         String currency
 ) {
+    public static final Money ZERO = new Money(0, "KEW");
+
     // 도메인 로직
     public Money plus(Money other) {
         if (!currency.equals(other.currency)) {
