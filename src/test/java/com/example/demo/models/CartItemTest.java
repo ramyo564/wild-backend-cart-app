@@ -19,7 +19,7 @@ class CartItemTest {
         productId = new ProductId();
         product = new Product(productId);
 
-        CartItemId cartItemId = new CartItemId();
+        cartItemId = new CartItemId();
         cartItem = new CartItem(cartItemId, product, 1);
     }
 
@@ -28,5 +28,20 @@ class CartItemTest {
         cartItem.addQuantity(1);
         assertEquals(2, cartItem.getQuantity());
     }
+    @Test
+    void addQuantity_WhenAddingPositiveNumber_ShouldIncreaseQuantity() {
+        cartItem.addQuantity(1);
+        assertEquals(2, cartItem.getQuantity());
+    }
 
+    @Test
+    void addQuantity_WhenAddingNegativeNumber_ShouldThrowException() {
+        assertThrows(IllegalArgumentException.class, () -> cartItem.addQuantity(-1));
+    }
+
+    @Test
+    void addQuantity_WhenAddingZero_ShouldNotChangeQuantity() {
+        cartItem.addQuantity(0);
+        assertEquals(1, cartItem.getQuantity());
+    }
 }
