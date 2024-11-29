@@ -38,6 +38,9 @@ public class Cart {
     }
 
     private void addNewCartItem(ProductId productId, int quantity) {
+        if (productId == null) {
+            throw new IllegalArgumentException("상품 ID는 null일 수 없습니다.");
+        }
         CartItemId cartItemId = new CartItemId();
         Product product = new Product(productId);
         CartItem newCartItem = new CartItem(cartItemId, product, quantity);
@@ -46,8 +49,11 @@ public class Cart {
 
     private Optional<CartItem> findCartItem(ProductId productId) {
         return cartItems.stream()
-                .filter(cartItem ->
-                        cartItem.getProduct().productId().equals(productId))
+                .filter(cartItem -> {
+                    Product product = cartItem.getProduct();
+                    return product != null &&
+                            product.productId().equals(productId);
+                })
                 .findFirst();
     }
 
