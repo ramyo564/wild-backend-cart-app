@@ -1,5 +1,7 @@
 package com.example.demo.models;
 
+import java.util.Objects;
+
 public class CartItem {
 
     private final CartItemId id;
@@ -34,6 +36,19 @@ public class CartItem {
 
     public int getQuantity() {
         return quantity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CartItem cartItem = (CartItem) o;
+        return id.equals(cartItem.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override
