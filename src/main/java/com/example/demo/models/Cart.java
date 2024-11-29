@@ -50,7 +50,7 @@ public class Cart {
     private Optional<CartItem> findCartItem(ProductId productId) {
         return cartItems.stream()
                 .filter(cartItem ->
-                        cartItem.getProduct().getProductId().equals(productId))
+                        cartItem.getProduct().productId().equals(productId))
                 .findFirst();
     }
 
