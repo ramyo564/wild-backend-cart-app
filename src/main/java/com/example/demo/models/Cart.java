@@ -7,15 +7,12 @@ import java.util.Optional;
 
 public class Cart {
 
-    private ArrayList<CartItem> cartItems;
+    private final List<CartItem> cartItems;
     private int totalQuantity;
-    private final Product product;
 
-    public Cart(ArrayList<CartItem> cartItems, int totalQuantity,
-            Product product) {
-        this.cartItems = cartItems;
-        this.totalQuantity = totalQuantity;
-        this.product = product;
+    public Cart() {
+        this.cartItems = new ArrayList<>();
+        this.totalQuantity = 0;
     }
 
     public void checkTotalQuantity(int quantity) {
@@ -60,10 +57,18 @@ public class Cart {
 
     public void madeCartZero() {
         this.totalQuantity = 0;
-        this.cartItems = new ArrayList<CartItem>();
+        this.cartItems.clear();
     }
 
     public int getTotalQuantity() {
         return totalQuantity;
+    }
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "cartItems=" + cartItems +
+                ", totalQuantity=" + totalQuantity +
+                '}';
     }
 }

@@ -22,13 +22,9 @@ class CartTest {
     @BeforeEach
     void setUp() {
         productId = new ProductId();
-        product = new Product(productId);
-        cartItems = new ArrayList<>();
-        cartItemId = new CartItemId();
-        cartItem = new CartItem(cartItemId, product, 1);
-        cartItems.add(cartItem);
+        cart = new Cart();
+        cart.addCartItem(productId, 1);
 
-        cart = new Cart(cartItems, 1, product);
     }
 
     @DisplayName("기존의 상품을 추가할 경우")
@@ -36,7 +32,7 @@ class CartTest {
     void addCartItem() {
         cart.addCartItem(productId, 1);
         assertEquals(2, cart.getTotalQuantity());
-        assertEquals(1, cartItems.size());
+        assertEquals(1, cart.getCartList().size());
     }
 
     @DisplayName("새로운 상품을 추가할 경우")
@@ -44,8 +40,9 @@ class CartTest {
     void addNewCartItem() {
         ProductId newProductId = new ProductId();
         cart.addCartItem(newProductId, 1);
+
         assertEquals(2, cart.getTotalQuantity());
-        assertEquals(2, cartItems.size());
+        assertEquals(2, cart.getCartList().size());
     }
 
     @DisplayName("장바구니 총계가 20을 넘길 경우")
@@ -72,10 +69,9 @@ class CartTest {
     @DisplayName("장바구니 목록 보기")
     @Test
     void getCartList() {
+        System.out.println(cart.getCartList().toString());
         assertTrue(cart.getCartList().toString().contains("quantity=1"));
         assertTrue(cart.getCartList().toString()
                 .contains("product={" + productId + "}"));
-        assertTrue(cart.getCartList().toString()
-                .contains("id=" + cartItemId));
     }
 }
