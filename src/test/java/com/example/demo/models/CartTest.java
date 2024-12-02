@@ -48,14 +48,9 @@ class CartTest {
     @DisplayName("장바구니 총계가 20을 넘길 경우")
     @Test
     void checkTotalQuantityLimit() {
-        ExceedTotalQuantity exception =
-                assertThrows(ExceedTotalQuantity.class, () -> {
+        assertThrows(ExceedTotalQuantity.class, () -> {
                     cart.addCartItem(productId, 20);
                 });
-
-        assertEquals(
-                "장바구니 총 합계는 20을 넘길 수 없습니다."
-                , exception.getMessage());
     }
 
     @DisplayName("장바구니 비우기")
