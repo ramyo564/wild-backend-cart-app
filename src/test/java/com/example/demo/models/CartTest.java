@@ -12,25 +12,22 @@ import org.junit.jupiter.api.Test;
 
 class CartTest {
 
-    private ArrayList<CartItem> cartItems;
-    private Product product;
     private ProductId productId;
-    private CartItem cartItem;
-    private CartItemId cartItemId;
     private Cart cart;
 
-    @BeforeEach
-    void setUp() {
-        productId = new ProductId();
-        cart = new Cart();
-        cart.addCartItem(productId, 1);
-
-    }
 
     @DisplayName("기존의 상품을 추가할 경우")
     @Test
     void addCartItem() {
+        // given
+        productId = new ProductId();
+        cart = new Cart();
         cart.addCartItem(productId, 1);
+
+        // when
+        cart.addCartItem(productId, 1);
+
+        // then
         assertEquals(2, cart.getTotalQuantity());
         assertEquals(1, cart.getCartList().size());
     }
@@ -38,9 +35,16 @@ class CartTest {
     @DisplayName("새로운 상품을 추가할 경우")
     @Test
     void addNewCartItem() {
+        // given
+        productId = new ProductId();
+        cart = new Cart();
+        cart.addCartItem(productId, 1);
+
+        // when
         ProductId newProductId = new ProductId();
         cart.addCartItem(newProductId, 1);
 
+        // then
         assertEquals(2, cart.getTotalQuantity());
         assertEquals(2, cart.getCartList().size());
     }
@@ -48,6 +52,12 @@ class CartTest {
     @DisplayName("장바구니 총계가 20을 넘길 경우")
     @Test
     void checkTotalQuantityLimit() {
+        // given
+        productId = new ProductId();
+        cart = new Cart();
+        cart.addCartItem(productId, 1);
+
+        // when & then
         assertThrows(ExceedTotalQuantity.class, () -> {
                     cart.addCartItem(productId, 20);
                 });
@@ -56,7 +66,15 @@ class CartTest {
     @DisplayName("장바구니 비우기")
     @Test
     void madeCartZero() {
+        // given
+        productId = new ProductId();
+        cart = new Cart();
+        cart.addCartItem(productId, 1);
+
+        // when
         cart.madeCartZero();
+
+        // then
         assertEquals(0, cart.getTotalQuantity());
         assertEquals(0, cart.getCartList().size());
     }
@@ -64,9 +82,15 @@ class CartTest {
     @DisplayName("장바구니 목록 보기")
     @Test
     void getCartList() {
+        // given
+        productId = new ProductId();
+        cart = new Cart();
+        cart.addCartItem(productId, 1);
+
+        // when & then
         System.out.println(cart.getCartList().toString());
-        assertTrue(cart.getCartList().toString().contains("quantity=1"));
-        assertTrue(cart.getCartList().toString()
-                .contains("product={" + productId + "}"));
+        assertEquals(cart.getCartList().getFirst().getProduct().productId(),
+                productId);
+        assertEquals(cart.getCartList().getFirst().getQuantity(), 1);
     }
 }
