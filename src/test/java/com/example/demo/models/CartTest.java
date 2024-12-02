@@ -49,6 +49,26 @@ class CartTest {
         assertEquals(2, cart.getCartList().size());
     }
 
+    @DisplayName("새로운 상품을 추가할 경우2")
+    @Test
+    void addNewCartItem2() {
+        // given
+        productId = new ProductId();
+        cart = new Cart();
+        cart.addCartItem(productId, 1);
+
+        // when
+        ProductId newProductId = new ProductId();
+        cart.addCartItem(newProductId, 2);
+
+        ProductId newProductId2 = new ProductId();
+        cart.addCartItem(newProductId2, 2);
+
+        // then
+        assertEquals(5, cart.getTotalQuantity());
+        assertEquals(3, cart.getCartList().size());
+    }
+
     @DisplayName("장바구니 총계가 20을 넘길 경우")
     @Test
     void checkTotalQuantityLimit() {
